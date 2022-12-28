@@ -1,0 +1,3 @@
+[submodule "topologicpy"]
+	path = topologicpy
+	url = https://github.com/wassimj/topologicpy.git
