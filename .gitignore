@@ -1,0 +1,38 @@
+# VSCode
+.vscode/settings.json
+.vscode/launch.json
+
+*.pdf
+*.html
+*.webm
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pynb_*/*
+
+# Temp
+tmp/*
+cfd_python/ch10/*
+temp_*/*
+*/temp_*/*
+temp_*
+
+# cpp
+a.exe
+a.out
+*.exe
+*.obj
+
+rf-field/*.h5
+ffield.lut.8
+
+# zip
+*.zip
+
+# build
+build/*
+.qt_for_python/*
+
+# img
+*/~*.pptx
