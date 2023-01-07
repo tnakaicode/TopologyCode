@@ -7,7 +7,7 @@ import time
 import argparse
 from linecache import getline, clearcache, updatecache
 
-# "./img/IMG-20230107-001.png"
+# "./img/IMG-20230106-001.png"
 
 sys.path.append(os.path.join("./"))
 import topologicpy
@@ -67,27 +67,12 @@ if __name__ == '__main__':
     opt = parser.parse_args()
     print(opt, argvs)
 
-    rect1 = Wire.Rectangle(width=10, length=10)
-    v1 = Vertex.ByCoordinates(0, -6, 0)
-    v2 = Vertex.ByCoordinates(0, 6, 0)
-    e1 = Edge.ByVertices([v1, v2])
-    rect1 = Topology.Boolean(rect1, e1, operation="slice")
+    torus1 = Cell.Torus()
+    torus1 = Topology.Triangulate(torus1)
 
-    d = Dictionary.ByKeysValues(["offset"], [-1.5])
-    v3 = Vertex.ByCoordinates(2.5, 5, 0)
-    v4 = Vertex.ByCoordinates(-2.5, -5, 0)
+    torus1Data = Plotly.DataByTopology(
+        torus1, faceColor="red", faceOpacity=0.5, wireWidth=2, vertexColor=2)
 
-    v3 = Topology.SetDictionary(v3, d)
-    v4 = Topology.SetDictionary(v4, d)
-    rect1 = Topology.TransferDictionariesBySelectors(
-        rect1, [v3, v4], tranEdges=True, tolerance=0.1)
-    # rect2 = Wire.ByOffset(rect1)
-    # rect2 = Face.ByWire(rect2)
-    # rect2Data = Plotly.DataByTopology(rect2)
-    v3Data = Plotly.DataByTopology(v3, vertexSize=5, vertexColor="red")
-    v4Data = Plotly.DataByTopology(v4, vertexSize=5, vertexColor="red")
-    rect1Data = Plotly.DataByTopology(rect1, vertexSize=3)
-
-    fig = Plotly.FigureByData(rect1Data + v3Data + v4Data)
-    Plotly.SetCamera(fig, camera=[0, 0, 2.5])
+    fig = Plotly.FigureByData(torus1Data)
+    Plotly.SetCamera(fig, camera=[1.5, 1.5, 1.5], target=[0, 0, 0])
     Plotly.Show(fig)
