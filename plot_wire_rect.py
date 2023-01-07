@@ -7,6 +7,8 @@ import time
 import argparse
 from linecache import getline, clearcache, updatecache
 
+# "./img/IMG-20230107-001.png"
+
 sys.path.append(os.path.join("./"))
 import topologicpy
 # import topologic
@@ -18,8 +20,8 @@ from topologicpy.Cluster import Cluster
 from topologicpy.Color import Color
 from topologicpy.Context import Context
 # from topologicpy.DGL import DGL
-# from topologicpy.Dictionary import Dictionary
-# from topologicpy.Edge import Edge
+from topologicpy.Dictionary import Dictionary
+from topologicpy.Edge import Edge
 # from topologicpy.EnergyModel import EnergyModel
 # from topologicpy.Face import Face
 # from topologicpy.Graph import Graph
@@ -37,8 +39,8 @@ from topologicpy.Plotly import Plotly
 from topologicpy.Topology import Topology
 # from topologicpy.UnitTest import UnitTest
 # from topologicpy.Vector import Vector
-# from topologicpy.Vertex import Vertex
-# from topologicpy.Wire import Wire
+from topologicpy.Vertex import Vertex
+from topologicpy.Wire import Wire
 
 # ./img/topologicpy.jpg
 # conda install pytorch torchvision torchaudio cpuonly -c pytorch
@@ -64,12 +66,22 @@ if __name__ == '__main__':
                         default=[0.0, 0.0, 0.0], type=float, nargs=3)
     opt = parser.parse_args()
     print(opt, argvs)
-
-    building = CellComplex.Box(uSides=4, vSides=2, wSides=3)
-    atrium = Cell.Box(width=0.5, length=0.5)
-    building = Topology.Boolean(building, atrium, "impose")
-    buildingData = Plotly.DataByTopology(building)
-
-    plotlyData = buildingData
-    plotlyFigure = Plotly.FigureByData(plotlyData)
-    Plotly.Show(plotlyFigure)
+    
+    rect1 = Wire.Rectangle(width=10, length=10)
+    v1 = Vertex.ByCoordinates(0,-6,0)
+    v2 = Vertex.ByCoordinates(0,6,0)
+    e1 = Edge.ByVertices([v1, v2])
+    rect1 = Topology.Boolean(rect1, e1, operation="slice")
+    
+    d = Dictionary.ByKeysValues(["offset"],[-1.5])
+    v3 = Vertex.ByCoordinates(2.5, 5, 0)
+    v4 = Vertex.ByCoordinates(-2.5, -5, 0)
+    
+    v3 = Topology.SetDictionary(v3, d)
+    v4 = Topology.SetDictionary(v4, d)
+    rect1 = Topology.TransferDictionariesBySelectors(rect1, [v3, v4], tranEdges=True, tolerance=0.1)
+    
+    rect1Data = Plotly.DataByTopology(rect1, vertexSize=3)
+    fig = Plotly.FigureByData(rect1Data)
+    Plotly.SetCamera(fig, camera=[0,0,2.5])
+    Plotly.Show(fig)
