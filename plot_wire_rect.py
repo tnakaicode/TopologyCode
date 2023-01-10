@@ -79,15 +79,18 @@ if __name__ == '__main__':
 
     v3 = Topology.SetDictionary(v3, d)
     v4 = Topology.SetDictionary(v4, d)
-    rect1 = Topology.TransferDictionariesBySelectors(
-        rect1, [v3, v4], tranEdges=True, tolerance=0.1)
-    # rect2 = Wire.ByOffset(rect1)
-    # rect2 = Face.ByWire(rect2)
-    # rect2Data = Plotly.DataByTopology(rect2)
+    rect1 = Topology.TransferDictionariesBySelectors(rect1, [v3, v4],
+                                                     tranEdges=True, tranFaces=True, tranVertices=True,
+                                                     tolerance=0.1)
+    rect2 = Wire.ByOffset(rect1, offset=-0.5, offsetKey="offset")
+    rect2 = Face.ByWire(rect2)
+
+    rect1Data = Plotly.DataByTopology(rect1, vertexSize=3, faceOpacity=0.5, drawFaces=True)
+    rect2Data = Plotly.DataByTopology(rect2)
     v3Data = Plotly.DataByTopology(v3, vertexSize=5, vertexColor="red")
     v4Data = Plotly.DataByTopology(v4, vertexSize=5, vertexColor="red")
-    rect1Data = Plotly.DataByTopology(rect1, vertexSize=3)
-
-    fig = Plotly.FigureByData(rect1Data + v3Data + v4Data)
+    
+    plotlyData = rect1Data
+    fig = Plotly.FigureByData(plotlyData, width=950 * 2, height=500 * 2)
     Plotly.SetCamera(fig, camera=[0, 0, 2.5])
     Plotly.Show(fig)

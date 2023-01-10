@@ -70,9 +70,11 @@ if __name__ == '__main__':
     torus1 = Cell.Torus()
     torus1 = Topology.Triangulate(torus1)
 
-    torus1Data = Plotly.DataByTopology(
-        torus1, faceColor="red", faceOpacity=0.5, wireWidth=2, vertexColor=2)
+    torus1Data = Plotly.DataByTopology(torus1, 
+                                       faceColor="red", faceOpacity=0.5, wireWidth=2, vertexColor=2)
 
-    fig = Plotly.FigureByData(torus1Data)
-    Plotly.SetCamera(fig, camera=[1.5, 1.5, 1.5], target=[0, 0, 0])
+    plotlyData = torus1Data
+    fig = Plotly.FigureByData(plotlyData, width=950 * 2, height=500 * 2)
+    Plotly.SetCamera(fig, 
+                     camera=[1.5, 1.5, 1.5], target=[0, 0, 0], )
     Plotly.Show(fig)

@@ -22,7 +22,7 @@ from topologicpy.Context import Context
 # from topologicpy.Edge import Edge
 # from topologicpy.EnergyModel import EnergyModel
 # from topologicpy.Face import Face
-# from topologicpy.Graph import Graph
+from topologicpy.Graph import Graph
 # from topologicpy.Graph_Export import Graph_Export
 from topologicpy.Grid import Grid
 # from topologicpy.Helper import Helper
@@ -70,6 +70,12 @@ if __name__ == '__main__':
     building = Topology.Boolean(building, atrium, "impose")
     buildingData = Plotly.DataByTopology(building)
 
-    plotlyData = buildingData
-    plotlyFigure = Plotly.FigureByData(plotlyData)
-    Plotly.Show(plotlyFigure)
+    graph = Graph.ByTopology(building, atrium, "impose")
+    graphTopology = Cluster.SelfMerge(Graph.Topology(graph))
+    graphData = Plotly.DataByTopology(graphTopology,
+                                      wireColor="red", wireWidth=3, vertexSize=4, vertexColor="blue",
+                                      drawWires=True)
+
+    plotlyData = buildingData + graphData
+    fig = Plotly.FigureByData(plotlyData, width=950 * 2, height=500 * 2)
+    Plotly.Show(fig)
