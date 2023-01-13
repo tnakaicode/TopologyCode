@@ -90,7 +90,7 @@ if __name__ == '__main__':
     v3Data = Plotly.DataByTopology(v3, vertexSize=5, vertexColor="red")
     v4Data = Plotly.DataByTopology(v4, vertexSize=5, vertexColor="red")
     
-    plotlyData = rect1Data
+    plotlyData = rect1Data + rect2Data
     fig = Plotly.FigureByData(plotlyData, width=950 * 2, height=500 * 2)
     Plotly.SetCamera(fig, camera=[0, 0, 2.5])
     Plotly.Show(fig)
