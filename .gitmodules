@@ -1,3 +1,6 @@
 [submodule "topologicpy"]
 	path = topologicpy
 	url = https://github.com/wassimj/topologicpy.git
+[submodule "Topologic"]
+	path = Topologic
+	url = https://github.com/wassimj/Topologic.git
