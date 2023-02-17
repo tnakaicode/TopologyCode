@@ -11,7 +11,7 @@ from linecache import getline, clearcache, updatecache
 
 sys.path.append(os.path.join("./"))
 import topologicpy
-# import topologic
+#import topologic
 
 from topologicpy.Aperture import Aperture
 from topologicpy.Cell import Cell
@@ -85,10 +85,10 @@ if __name__ == '__main__':
     rect2 = Wire.ByOffset(rect1, offset=-0.5, offsetKey="offset")
     rect2 = Face.ByWire(rect2)
 
-    rect1Data = Plotly.DataByTopology(rect1, vertexSize=3, faceOpacity=0.5, drawFaces=True)
-    rect2Data = Plotly.DataByTopology(rect2)
-    v3Data = Plotly.DataByTopology(v3, vertexSize=5, vertexColor="red")
-    v4Data = Plotly.DataByTopology(v4, vertexSize=5, vertexColor="red")
+    rect1Data = Plotly.DataByTopology(rect1, faceColor="lightblue", vertexSize=3, faceOpacity=0.5, drawFaces=True)
+    rect2Data = Plotly.DataByTopology(rect2, faceColor="lightblue", )
+    v3Data = Plotly.DataByTopology(v3, faceColor="lightblue", vertexSize=5, vertexColor="red")
+    v4Data = Plotly.DataByTopology(v4, faceColor="lightblue", vertexSize=5, vertexColor="red")
     
     plotlyData = rect1Data + rect2Data
     fig = Plotly.FigureByData(plotlyData, width=950 * 2, height=500 * 2)
