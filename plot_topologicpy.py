@@ -25,7 +25,7 @@ from topologicpy.Face import Face
 from topologicpy.Graph import Graph
 # from topologicpy.Graph_Export import Graph_Export # unexpected indent
 from topologicpy.Grid import Grid
-from topologicpy.Helper import meshData
+from topologicpy.Helper import Helper
 # from topologicpy.Honeybee import Honeybee # install honeybee, honeybee_energy
 from topologicpy.Matrix import Matrix
 # from topologicpy.Neo4jGraph import Neo4jGraph # py2neo
