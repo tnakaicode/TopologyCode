@@ -85,7 +85,7 @@ if __name__ == '__main__':
     rect2 = Wire.ByOffset(rect1, offset=-0.5, offsetKey="offset")
     rect2 = Face.ByWire(rect2)
 
-    rect1Data = Plotly.DataByTopology(rect1, faceColor="lightblue", vertexSize=3, faceOpacity=0.5, drawFaces=True)
+    rect1Data = Plotly.DataByTopology(rect1, faceColor="lightblue", vertexSize=3, faceOpacity=0.5)
     rect2Data = Plotly.DataByTopology(rect2, faceColor="lightblue", )
     v3Data = Plotly.DataByTopology(v3, faceColor="lightblue", vertexSize=5, vertexColor="red")
     v4Data = Plotly.DataByTopology(v4, faceColor="lightblue", vertexSize=5, vertexColor="red")
@@ -93,4 +93,4 @@ if __name__ == '__main__':
     plotlyData = rect1Data + rect2Data
     fig = Plotly.FigureByData(plotlyData, width=950 * 2, height=500 * 2)
     Plotly.SetCamera(fig, camera=[0, 0, 2.5])
-    Plotly.Show(fig)
+    Plotly.Show(fig, renderer="browser")

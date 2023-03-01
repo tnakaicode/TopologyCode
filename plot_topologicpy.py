@@ -74,9 +74,8 @@ if __name__ == '__main__':
     graph = Graph.ByTopology(building, atrium, "impose")
     graphTopology = Cluster.SelfMerge(Graph.Topology(graph))
     graphData = Plotly.DataByTopology(graphTopology,
-                                      wireColor="red", wireWidth=3, vertexSize=4, vertexColor="blue",
-                                      drawWires=True)
+                                      edgeColor="red", vertexSize=4, vertexColor="blue",)
 
     plotlyData = buildingData + graphData
     fig = Plotly.FigureByData(plotlyData, width=950 * 2, height=500 * 2)
-    Plotly.Show(fig)
+    Plotly.Show(fig, renderer="browser")

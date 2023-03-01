@@ -82,14 +82,14 @@ if __name__ == '__main__':
     torus3 = Topology.Translate(torus3, 1.2, 0.0)
 
     torus1Data = Plotly.DataByTopology(torus1,
-                                       faceColor="red", faceOpacity=0.5, wireWidth=2, vertexColor=2)
+                                       faceColor="red", faceOpacity=0.5, vertexColor=2)
     torus2Data = Plotly.DataByTopology(torus2,
-                                       faceColor="green", faceOpacity=0.5, wireWidth=2, vertexColor=2)
+                                       faceColor="green", faceOpacity=0.5, vertexColor=2)
     torus3Data = Plotly.DataByTopology(torus3,
-                                       faceColor="blue", faceOpacity=0.5, wireWidth=2, vertexColor=2)
+                                       faceColor="blue", faceOpacity=0.5, vertexColor=2)
 
     plotlyData = torus1Data + torus2Data + torus3Data
     fig = Plotly.FigureByData(plotlyData, width=950 * 2, height=500 * 2)
     Plotly.SetCamera(fig,
                      camera=[1.5, 1.5, 1.5], target=[0, 0, 0], )
-    Plotly.Show(fig)
+    Plotly.Show(fig, renderer="browser")
