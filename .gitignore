@@ -11,6 +11,11 @@
 *.py[cod]
 *.pynb_*/*
 
+# Build
+build*
+dist*
+*.egg-info
+
 # Temp
 tmp/*
 cfd_python/ch10/*
