@@ -10,6 +10,11 @@ setup(name='topologicpy',
       author_email="jabiw@cardiff.ac.uk",
       packages=['topologicpy'],
       package_dir={'topologicpy': 'topologicpy'},
-      package_data={},
+      package_data={'topologicpy': ['assets/*',
+                                    'bin/linux/topologic/*',
+                                    'bin/windows/topologic/*']},
       zip_safe=False
       )
+
+# python setup.py bdist_wheel
+# pip install .\dist\topologicpy-0.2.2-py3-none-any.whl --force-reinstall
