@@ -1,6 +1,7 @@
 # TopologyCode
 
 ```bash
+conda env export > py39_math.yaml
 conda env create -f py39_math.yaml
 ```
 
