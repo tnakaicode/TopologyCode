@@ -83,12 +83,12 @@ if __name__ == '__main__':
     torusData = Plotly.DataByTopology(torus1,
                                       faceColor="red", faceOpacity=0.5, vertexColor=2)
 
-    head1 = Topology.ByImportedBRep("./shp/cylinder_head.brep")
-    head1 = Topology.Triangulate(head1)
-    head1Data = Plotly.DataByTopology(head1,
+    brep1 = Topology.ByImportedBRep("./shp/fuselage_structure.brep")
+    brep1 = Topology.Triangulate(brep1)
+    brep1Data = Plotly.DataByTopology(brep1,
                                       faceColor="blue")
 
-    plotlyData = head1Data
+    plotlyData = brep1Data
     fig = Plotly.FigureByData(plotlyData, width=950 * 2, height=500 * 2)
     Plotly.SetCamera(fig,
                      camera=[1.5, 1.5, 1.5], target=[0, 0, 0], )
