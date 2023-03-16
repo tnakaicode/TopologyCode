@@ -81,6 +81,8 @@ if __name__ == '__main__':
 
     torus3 = Cluster.ByTopologies(offsetWires + [torus2])
     torus3 = Topology.Translate(torus3, 1.2, 0.0)
+    
+    Topology.ExportToBRep(Cell.Torus(), "./shp/torus.brep")
 
     torus1Data = Plotly.DataByTopology(torus1,
                                        faceColor="red", faceOpacity=0.5, vertexColor=2)
