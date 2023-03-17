@@ -24,7 +24,7 @@ conda env create -f py39_math.yaml
 
 ## Issue
 
-### Issue-1
+### Issue#17
 
 pythonocc-core(<https://github.com/tpaviot/pythonocc-core>)というOpenCASCDAEのPython Warpperでtopologicpyで作ったTorusをTopology.ByOCCTShape()で変換して、描画しようとしたのですがErrorが出てしまいます。
 Topology.ByOCCTShape()の変換で、型がtopologic.TopoDS_Shapeであることが原因なのでですが、なにか解決方法はないでしょうか？
