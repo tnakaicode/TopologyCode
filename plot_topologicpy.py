@@ -71,7 +71,7 @@ if __name__ == '__main__':
     building = Topology.Boolean(building, atrium, "impose")
     buildingData = Plotly.DataByTopology(building)
 
-    graph = Graph.ByTopology(building, atrium, "impose")
+    graph = Graph.ByTopology(building, direct=False, directApertures=False)
     graphTopology = Cluster.SelfMerge(Graph.Topology(graph))
     graphData = Plotly.DataByTopology(graphTopology,
                                       edgeColor="red", vertexSize=4, vertexColor="blue",)

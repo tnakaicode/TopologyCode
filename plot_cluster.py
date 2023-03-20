@@ -56,10 +56,6 @@ from topologicpy.Wire import Wire
 # from base import plot2d, plot3d
 # from base_occ import dispocc
 
-from OCC.Display.SimpleGui import init_display
-from OCC.Core.BRepPrimAPI import BRepPrimAPI_MakeBox
-from OCC.Core.Quantity import Quantity_Color, Quantity_NOC_ALICEBLUE, Quantity_NOC_ANTIQUEWHITE
-
 import logging
 logging.getLogger('matplotlib').setLevel(logging.ERROR)
 
@@ -72,19 +68,18 @@ if __name__ == '__main__':
     opt = parser.parse_args()
     print(opt, argvs)
 
-    torus1 = Cell.Torus()
-    torus1 = Topology.Triangulate(torus1)
-    
-    box1 = BRepPrimAPI_MakeBox(10., 20., 30.).Shell()
-    box1_top = Shell.ByOCCTShape(box1)
-    
-    torus1_shp = Topology.OCCTShape(torus1)
-    
-    print(torus1_shp)
-    print(torus1.GetOcctShape())
-    print(topologicpy.topologic.TopologyFactoryManager.GetDefaultFactory(box1.ShapeType()))
-    print(Topology.ByOCCTShape(box1))
+    c = CellComplex.Prism()
 
-    display, start_display, add_menu, add_function_to_menu = init_display()
-    display.DisplayShape(Topology.OCCTShape(torus1), update=True)
-    start_display()
+    cluster1 = Topology.Explode(c, scale=1.75)
+    cells = Cluster.FreeCells(cluster1)
+    cluster2 = Topology.Explode(cells[0], scale=1.9)
+    cluster3 = Cluster.ByTopologies([cluster1, cluster2])
+
+    g = Graph.ByTopology(cluster3, toExteriorTopologies=True)
+
+    c_data = Plotly.DataByTopology(cluster3)
+    g_data = Plotly.DataByGraph(g, vertexSize=2, vertexColor="blue")
+    fig = Plotly.FigureByData(c_data, width=950 * 2, height=500 * 2)
+    Plotly.SetCamera(fig,
+                     camera=[1.5, 1.5, 1.5], target=[0, 0, 0], )
+    Plotly.Show(fig, renderer="browser")

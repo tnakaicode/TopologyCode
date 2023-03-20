@@ -56,10 +56,6 @@ from topologicpy.Wire import Wire
 # from base import plot2d, plot3d
 # from base_occ import dispocc
 
-from OCC.Display.SimpleGui import init_display
-from OCC.Core.BRepPrimAPI import BRepPrimAPI_MakeBox
-from OCC.Core.Quantity import Quantity_Color, Quantity_NOC_ALICEBLUE, Quantity_NOC_ANTIQUEWHITE
-
 import logging
 logging.getLogger('matplotlib').setLevel(logging.ERROR)
 
@@ -72,19 +68,29 @@ if __name__ == '__main__':
     opt = parser.parse_args()
     print(opt, argvs)
 
-    torus1 = Cell.Torus()
-    torus1 = Topology.Triangulate(torus1)
-    
-    box1 = BRepPrimAPI_MakeBox(10., 20., 30.).Shell()
-    box1_top = Shell.ByOCCTShape(box1)
-    
-    torus1_shp = Topology.OCCTShape(torus1)
-    
-    print(torus1_shp)
-    print(torus1.GetOcctShape())
-    print(topologicpy.topologic.TopologyFactoryManager.GetDefaultFactory(box1.ShapeType()))
-    print(Topology.ByOCCTShape(box1))
+    c = Cell.Prism()
+    cluster = Topology.Explode(c, scale=2)
+    faces = Cluster.Faces(cluster)
+    face_dictionaries = []
+    face_selectors = []
+    everything = [f"Face {i:d}" for i in range(len(faces))]
 
-    display, start_display, add_menu, add_function_to_menu = init_display()
-    display.DisplayShape(Topology.OCCTShape(torus1), update=True)
-    start_display()
+    for i, f in enumerate(faces):
+        face_selector = Topology.Centroid(f)
+        name = f"Face {i:d}"
+        outposts = [e for e in everything if e != name]
+        face_dictionary = (Dictionary.ByKeysValues(["name", "outposts"],
+                                                   [name, outposts]))
+        face_selector = Topology.SetDictionary(face_selector, face_dictionary)
+        face_selectors.append(face_selector)
+    c = Topology.TransferDictionariesBySelectors(topology=cluster,
+                                                 selectors=face_selectors,
+                                                 tranFaces=True)
+    g = Graph.ByTopology(c, toExteriorTopologies=True)
+
+    c_data = Plotly.DataByTopology(c)
+    g_data = Plotly.DataByGraph(g)
+    fig = Plotly.FigureByData(c_data, width=950 * 2, height=500 * 2)
+    Plotly.SetCamera(fig,
+                     camera=[1.5, 1.5, 1.5], target=[0, 0, 0], )
+    Plotly.Show(fig, renderer="browser")
