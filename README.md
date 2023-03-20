@@ -67,3 +67,21 @@ print(torus1_shp)
 #display.DisplayShape(Topology.OCCTShape(torus1), update=True)
 #start_display()
 ```
+
+- answer
+
+I am not sure what DisplayShape is expecting as input, but this method was meant to make topologic compatible with FreeCAD. It outputs a TopoDS_Shape as you pointed out. Please search your API for a method that converts that or if you can convert a BREP use Topology.String(torus1)
+
+DisplayShapeが何を入力として想定しているかはわかりませんが、この方法はFreeCADとトポロジーの互換性を持たせるためのものでした。ご指摘の通りTopoDS_Shapeを出力しています。それを変換するメソッドをAPIで検索するか、BREPで変換できるのであればTopology.String(torus1)を使用してください。
+
+- reply
+
+DisplayShapeはOpenCASCADEで定義されているTopoDS_Shape(TopoDS_Shell, TopoDS_Face, ...)をInputに要求します。
+非常に惜しいところまで来ていて、topologic.TopoDS_Shapeの"topologic."の部分がなければ、型が一致してpythonocc-coreでも描画可能になると推測しています。
+
+Brepファイルに出力すれば見れるは確認しています。同じPythonで書かれたプログラムのため、外部ファイルを経由せずにデータの受け渡し方法がないかを模索しています。
+
+DisplayShape requires the type of TopoDS_Shape(TopoDS_Shell, TopoDS_Face, ...) defined in OpenCASCADE to the Input.
+It is very close, and I am guessing that without the "topologic." part of topologic.TopoDS_Shape, the types would match and pythonocc-core would be able to draw it.
+
+I have confirmed that I can see it if I output it to a blp file. Since the programs are written in the same Python, I am looking for a way to pass the data without going through an external file.
