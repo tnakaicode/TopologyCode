@@ -4,6 +4,7 @@ import sys
 import os
 import platform
 import time
+import io
 import argparse
 from linecache import getline, clearcache, updatecache
 
@@ -57,7 +58,11 @@ from topologicpy.Wire import Wire
 # from base_occ import dispocc
 
 from OCC.Display.SimpleGui import init_display
+from OCC.Core.TopoDS import TopoDS_Shape
 from OCC.Core.BRepPrimAPI import BRepPrimAPI_MakeBox
+from OCC.Core.BRep import BRep_Builder
+from OCC.Core.BRepTools import breptools
+from OCC.Core.Message import Message_ProgressRange
 from OCC.Core.Quantity import Quantity_Color, Quantity_NOC_ALICEBLUE, Quantity_NOC_ANTIQUEWHITE
 
 import logging
@@ -74,17 +79,34 @@ if __name__ == '__main__':
 
     torus1 = Cell.Torus()
     torus1 = Topology.Triangulate(torus1)
-    
-    box1 = BRepPrimAPI_MakeBox(10., 20., 30.).Shell()
-    box1_top = Shell.ByOCCTShape(box1)
-    
+    torus1Data = Plotly.DataByTopology(torus1,
+                                       faceColor="blue", faceOpacity=0.5, vertexColor=2)
+
+    # Convert the topology to a BRep string
+    ts = Topology.String(torus1, version=1)
+
+    # Create an IO stream from the BRep string
+    iss = io.StringIO(ts)
+
+    # Read the BRep String from the Brep string
+    occtShape = breptools.ReadFromString(ts)
+
     torus1_shp = Topology.OCCTShape(torus1)
-    
     print(torus1_shp)
-    print(torus1.GetOcctShape())
-    print(topologicpy.topologic.TopologyFactoryManager.GetDefaultFactory(box1.ShapeType()))
-    print(Topology.ByOCCTShape(box1))
+
+    box1 = BRepPrimAPI_MakeBox(1., 2., 3.).Shell()
+    box1_brep = breptools.WriteToString(box1)
+    box1_topo = Topology.ByString(box1_brep)
+    box1_Data = Plotly.DataByTopology(box1_topo,
+                                      faceColor="red", faceOpacity=0.5, vertexColor=2)
+
+    plotlyData = torus1Data + box1_Data
+    fig = Plotly.FigureByData(plotlyData, width=950 * 2, height=500 * 2)
+    Plotly.SetCamera(fig,
+                     camera=[1.5, 1.5, 1.5], target=[0, 0, 0], )
+    Plotly.Show(fig, renderer="browser")
 
     display, start_display, add_menu, add_function_to_menu = init_display()
-    display.DisplayShape(Topology.OCCTShape(torus1), update=True)
+    display.DisplayShape(occtShape, update=True)
+    display.DisplayShape(box1, update=True)
     start_display()
