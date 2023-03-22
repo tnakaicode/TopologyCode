@@ -59,7 +59,8 @@ from topologicpy.Wire import Wire
 
 from OCC.Display.SimpleGui import init_display
 from OCC.Core.TopoDS import TopoDS_Shape
-from OCC.Core.BRepPrimAPI import BRepPrimAPI_MakeBox
+from OCC.Core.gp import gp_Ax2, gp_Pnt, gp_Dir
+from OCC.Core.BRepPrimAPI import BRepPrimAPI_MakeBox, BRepPrimAPI_MakeTorus
 from OCC.Core.BRep import BRep_Builder
 from OCC.Core.BRepTools import breptools
 from OCC.Core.Message import Message_ProgressRange
@@ -77,36 +78,46 @@ if __name__ == '__main__':
     opt = parser.parse_args()
     print(opt, argvs)
 
+    # torus1: Topologicpy -> OCC
     torus1 = Cell.Torus()
     torus1 = Topology.Triangulate(torus1)
-    torus1Data = Plotly.DataByTopology(torus1,
+    print(torus1)
+    torus1_Data = Plotly.DataByTopology(torus1,
                                        faceColor="blue", faceOpacity=0.5, vertexColor=2)
 
     # Convert the topology to a BRep string
-    ts = Topology.String(torus1, version=1)
-
-    # Create an IO stream from the BRep string
-    iss = io.StringIO(ts)
+    torus1_brep = Topology.String(torus1, version=1)
 
     # Read the BRep String from the Brep string
-    occtShape = breptools.ReadFromString(ts)
+    torus1_shpe = breptools.ReadFromString(torus1_brep)
+    print(torus1_shpe)
 
-    torus1_shp = Topology.OCCTShape(torus1)
-    print(torus1_shp)
-
-    box1 = BRepPrimAPI_MakeBox(1., 2., 3.).Shell()
+    # box1: OCC -> Topologicpy
+    box1 = BRepPrimAPI_MakeBox(1.0, 2.0, 3.).Solid()
     box1_brep = breptools.WriteToString(box1)
     box1_topo = Topology.ByString(box1_brep)
+    print(box1_topo)
     box1_Data = Plotly.DataByTopology(box1_topo,
-                                      faceColor="red", faceOpacity=0.5, vertexColor=2)
+                                        faceColor="red", faceOpacity=0.5, vertexColor=2)
+    
+    # torus2: OCC -> Topologicpy
+    torus2 = BRepPrimAPI_MakeTorus(gp_Ax2(gp_Pnt(0, 0, 1), gp_Dir(0, 0, 1)),
+                                   0.5, 0.125).Face()
+    torus2_brep = breptools.WriteToString(torus2)
+    torus2_topo = Topology.ByString(torus2_brep)
+    print(torus2_topo, torus2_topo.Type(), topologicpy.topologic.Face.Type())
+    #torus2_Data = Plotly.DataByTopology(torus2_topo,
+    #                                    faceColor="red", faceOpacity=0.5, vertexColor=2)
 
-    plotlyData = torus1Data + box1_Data
+    plotlyData = torus1_Data + box1_Data
     fig = Plotly.FigureByData(plotlyData, width=950 * 2, height=500 * 2)
     Plotly.SetCamera(fig,
                      camera=[1.5, 1.5, 1.5], target=[0, 0, 0], )
     Plotly.Show(fig, renderer="browser")
 
     display, start_display, add_menu, add_function_to_menu = init_display()
-    display.DisplayShape(occtShape, update=True)
-    display.DisplayShape(box1, update=True)
+    display.DisplayShape(torus1_shpe, color="BLUE1")
+    display.DisplayShape(torus2, color="RED")
+    display.DisplayShape(box1, color="RED")
+    display.FitAll()
     start_display()
