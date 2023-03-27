@@ -20,7 +20,7 @@ from topologicpy.CellComplex import CellComplex
 from topologicpy.Cluster import Cluster
 from topologicpy.Color import Color
 from topologicpy.Context import Context
-# from topologicpy.DGL import DGL
+from topologicpy.DGL import DGL
 from topologicpy.Dictionary import Dictionary
 from topologicpy.Edge import Edge
 # from topologicpy.EnergyModel import EnergyModel
