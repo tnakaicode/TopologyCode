@@ -2,7 +2,7 @@
 from setuptools import setup
 
 setup(name='topologicpy',
-      version='0.3.4',
+      version='0.3.5',
       description='Topologic',
       license='GPL',
       url="https://github.com/wassimj/topologicpy.git",

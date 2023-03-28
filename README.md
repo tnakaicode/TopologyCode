@@ -9,10 +9,11 @@ conda env create -f py39_math.yaml
 
 ## UnitTest
 
+- [x] 01Vertex.py
 - [x] 02Edge.py
 - [x] 03Wire.py
 - [x] 04Face.py
-- [ ] 05Shell.py
+- [x] 05Shell.py
 - [x] 06Cell.py
 - [x] 07CellComplex.py
 - [x] 08Cluster.py
